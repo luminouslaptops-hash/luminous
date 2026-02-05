@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import SkillCenter from '@/app/components/SkillCenter';
+import Navbar from '@/app/components/Navbar';
 
 export default function PlaygroundPage() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -32,11 +33,16 @@ export default function PlaygroundPage() {
   }
 
   return (
-    <SkillCenter
-      studentId={user?.id}
-      studentName={user?.name}
-      assignmentId="assignment-001"
-      assignmentTitle="Web Design Basics"
-    />
+    <>
+      <Navbar />
+      <div className="pt-16">
+        <SkillCenter
+          studentId={user?.id}
+          studentName={user?.name}
+          assignmentId="assignment-001"
+          assignmentTitle="Web Design Basics"
+        />
+      </div>
+    </>
   );
 }

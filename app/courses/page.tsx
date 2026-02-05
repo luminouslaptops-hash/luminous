@@ -2,6 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/lib/AuthContext';
+import { useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar';
 
 interface Course {
@@ -17,10 +19,21 @@ interface Course {
 }
 
 export default function CoursesPage() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+  const handleEnrollClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      router.push('/browse-courses');
+    } else {
+      router.push('/login');
+    }
+  };
 
   // Mock course data
   const courses: Course[] = [
@@ -258,12 +271,12 @@ export default function CoursesPage() {
                           <span className="text-2xl font-bold text-indigo-600">
                             {course.price}
                           </span>
-                          <Link
-                            href="/login"
+                          <button
+                            onClick={handleEnrollClick}
                             className="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors duration-200"
                           >
-                            নিবন্ধন করুন
-                          </Link>
+                            {isAuthenticated ? 'কোর্সে যোগ দিন' : 'নিবন্ধন করুন'}
+                          </button>
                         </div>
                       </div>
                     </div>

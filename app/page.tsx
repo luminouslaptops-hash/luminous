@@ -20,17 +20,17 @@ export default function HomePage() {
         {/* Banner content */}
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in">
-            Welcome to Luminous Skill Center
+            লুমিনাস স্কিল সেন্টারে স্বাগতম
           </h1>
           <p className="text-lg sm:text-xl text-white opacity-95 max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            Luminous Skill Center delivers innovative learning solutions, including web design, digital marketing, and creative skills, with interactive technology and premium education at an affordable range.
+            লুমিনাস স্কিল সেন্টার ওয়েব ডিজাইন, ডিজিটাল মার্কেটিং এবং ক্রিয়েটিভ দক্ষতায় আধুনিক ও প্র্যাকটিক্যাল প্রশিক্ষণ প্রদান করে।
           </p>
           <Link
             href="/login"
             className="inline-block px-8 py-3 bg-white text-[#0ea5e9] font-bold rounded-lg hover:bg-opacity-90 transform hover:-translate-y-1 active:scale-95 transition-all duration-200 shadow-xl hover:shadow-2xl animate-fade-in"
             style={{ animationDelay: '0.4s' }}
           >
-            Get Started Now
+            এখনই শুরু করুন
           </Link>
         </div>
       </section>
@@ -39,91 +39,117 @@ export default function HomePage() {
       <section id="courses" className="py-24 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-[#f5f7fa] to-[#e9ecef]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-bold text-center text-[#667eea] mb-4 animate-fade-in relative pb-6">
-            Our Courses
+            আমাদের কোর্সসমূহ
             <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-linear-to-r from-[#667eea] to-[#764ba2] rounded-full"></span>
           </h2>
           <p className="text-center text-[#555] mb-16 animate-fade-in text-lg" style={{ animationDelay: '0.1s' }}>
-            Choose from our carefully designed courses
+            আমাদের সাবধানে ডিজাইন করা কোর্সগুলো থেকে পছন্দ করুন
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Course 1: Digital Marketing */}
-            <div className="card-base group bg-white rounded-2xl overflow-hidden cursor-pointer shadow-lg animate-fade-in transition-all duration-300 hover:shadow-2xl">
+            <Link
+              href="/login"
+              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group animate-fade-in"
+            >
               <div className="relative w-full h-56 overflow-hidden">
                 <Image 
                   src="https://kritagyata.in/wp-content/uploads/2024/01/graphic-design-1500-x-900-picture-lpuf40e9jm621ews.jpg"
-                  alt="Graphic Design"
+                  alt="Digital Marketing"
                   fill
-                  className="object-cover group-hover:scale-[1.08] transition-transform duration-400"
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-[#333] mb-4 group-hover:text-[#667eea] transition-colors duration-300">
+              <div className="p-6">
+                <div className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                  মার্কেটিং
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                   Digital Marketing
                 </h3>
-                <p className="text-[#666] mb-7 leading-relaxed group-hover:text-[#333] transition-colors duration-300">
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                   Strategic digital marketing solutions to grow brand visibility and connect customers with innovative software experiences.
                 </p>
-                <Link
-                  href="/my-classes"
-                  className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
-                >
-                  Get Started
-                </Link>
+                <div className="border-t border-gray-200 pt-4 mb-4">
+                  <p className="text-sm text-gray-600 mb-2">
+                    <span className="font-semibold text-gray-800">অনুপ্রেরক:</span> আমাদের দল
+                  </p>
+                </div>
+                <button className="w-full px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                  শুরু করুন
+                </button>
               </div>
-            </div>
+            </Link>
 
             {/* Course 2: Web Design */}
-            <div className="card-base group bg-white rounded-2xl overflow-hidden cursor-pointer shadow-lg animate-fade-in transition-all duration-300 hover:shadow-2xl" style={{ animationDelay: '0.1s' }}>
+            <Link
+              href="/login"
+              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group animate-fade-in"
+              style={{ animationDelay: '0.1s' }}
+            >
               <div className="relative w-full h-56 overflow-hidden">
                 <Image 
                   src="https://kritagyata.in/wp-content/uploads/2024/01/graphic-design-1500-x-900-picture-lpuf40e9jm621ews.jpg"
-                  alt="Graphic Design"
+                  alt="Web Design"
                   fill
-                  className="object-cover group-hover:scale-[1.08] transition-transform duration-400"
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-[#333] mb-4 group-hover:text-[#667eea] transition-colors duration-300">
+              <div className="p-6">
+                <div className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                  ডেভেলপমেন্ট
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                   Web Design & Development
                 </h3>
-                <p className="text-[#666] mb-7 leading-relaxed group-hover:text-[#333] transition-colors duration-300">
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                   Professional web solutions that ensure performance, security, and modern design standards.
                 </p>
-                <Link
-                  href="/my-classes"
-                  className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
-                >
-                  Get Started
-                </Link>
+                <div className="border-t border-gray-200 pt-4 mb-4">
+                  <p className="text-sm text-gray-600 mb-2">
+                    <span className="font-semibold text-gray-800">অনুপ্রেরক:</span> আমাদের দল
+                  </p>
+                </div>
+                <button className="w-full px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                  শুরু করুন
+                </button>
               </div>
-            </div>
+            </Link>
 
             {/* Course 3: Graphic Design */}
-            <div className="card-base group bg-white rounded-2xl overflow-hidden cursor-pointer shadow-lg animate-fade-in transition-all duration-300 hover:shadow-2xl" style={{ animationDelay: '0.2s' }}>
+            <Link
+              href="/login"
+              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group animate-fade-in"
+              style={{ animationDelay: '0.2s' }}
+            >
               <div className="relative w-full h-56 overflow-hidden">
                 <Image
                   src="https://kritagyata.in/wp-content/uploads/2024/01/graphic-design-1500-x-900-picture-lpuf40e9jm621ews.jpg"
                   alt="Graphic Design"
                   fill
-                  className="object-cover group-hover:scale-[1.08] transition-transform duration-400"
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-[#333] mb-4 group-hover:text-[#667eea] transition-colors duration-300">
+              <div className="p-6">
+                <div className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                  ডিজাইন
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                   Graphic Design
                 </h3>
-                <p className="text-[#666] mb-7 leading-relaxed group-hover:text-[#333] transition-colors duration-300">
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                   Creative visual designs that represent innovation, quality, and premium branding.
                 </p>
-                <Link
-                  href="/my-classes"
-                  className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
-                >
-                  Get Started
-                </Link>
+                <div className="border-t border-gray-200 pt-4 mb-4">
+                  <p className="text-sm text-gray-600 mb-2">
+                    <span className="font-semibold text-gray-800">অনুপ্রেরক:</span> আমাদের দল
+                  </p>
+                </div>
+                <button className="w-full px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                  শুরু করুন
+                </button>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

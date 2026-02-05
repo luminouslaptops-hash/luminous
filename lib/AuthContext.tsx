@@ -6,6 +6,7 @@ interface User {
   id: string;
   email: string;
   name: string;
+  enrolledCourses: string[]; // Array of course IDs
 }
 
 interface AuthContextType {
@@ -14,6 +15,9 @@ interface AuthContextType {
   login: (email: string, name: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
+  enrollCourse: (courseId: string) => void;
+  unenrollCourse: (courseId: string) => void;
+  isEnrolled: (courseId: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,12 +29,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Check if user was previously logged in (from localStorage)
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
+    console.log('Loading user from localStorage...');
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
+        console.log('Found stored user:', parsedUser);
+        // Ensure enrolledCourses array exists
+        if (!parsedUser.enrolledCourses) {
+          parsedUser.enrolledCourses = [];
+        }
+        console.log('User enrolled courses after load:', parsedUser.enrolledCourses);
+        setUser(parsedUser);
       } catch (e) {
+        console.error('Error parsing stored user:', e);
         localStorage.removeItem('user');
       }
+    } else {
+      console.log('No stored user found');
     }
     setIsLoading(false);
   }, []);
@@ -40,6 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       id: `user_${Date.now()}`,
       email,
       name,
+      enrolledCourses: [],
     };
     setUser(newUser);
     localStorage.setItem('user', JSON.stringify(newUser));
@@ -48,6 +64,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('enrolledCourses');
+  };
+
+  const enrollCourse = (courseId: string) => {
+    if (!user) {
+      console.log('Error: No user logged in');
+      return;
+    }
+    const updatedUser = {
+      ...user,
+      enrolledCourses: [...new Set([...user.enrolledCourses, courseId])],
+    };
+    console.log('Enrolling course:', courseId);
+    console.log('Updated enrolled courses:', updatedUser.enrolledCourses);
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    console.log('Saved to localStorage:', JSON.parse(localStorage.getItem('user') || '{}').enrolledCourses);
+  };
+
+  const unenrollCourse = (courseId: string) => {
+    if (!user) return;
+    const updatedUser = {
+      ...user,
+      enrolledCourses: user.enrolledCourses.filter(id => id !== courseId),
+    };
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  };
+
+  const isEnrolled = (courseId: string) => {
+    return user?.enrolledCourses.includes(courseId) || false;
   };
 
   return (
@@ -58,6 +105,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         logout,
         isAuthenticated: !!user,
+        enrollCourse,
+        unenrollCourse,
+        isEnrolled,
       }}
     >
       {children}
