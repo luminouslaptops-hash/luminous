@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter, useParams } from 'next/navigation';
 import { enrolledClasses, Module } from '@/lib/mockData';
-import VideoPlayer from '@/app/components/VideoPlayer';
-import ModuleList from '@/app/components/ModuleList';
+import Link from 'next/link';
 
 export default function ClassDetailsPage() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -15,9 +14,15 @@ export default function ClassDetailsPage() {
 
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Get class data
   const enrolledClass = enrolledClasses.find((c) => c.id === classId);
+
+  // Filter modules based on search
+  const filteredModules = enrolledClass?.modules.filter((m) =>
+    m.title.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
 
   // Initialize with current module
   useEffect(() => {
@@ -35,28 +40,28 @@ export default function ClassDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center">
-        <p className="text-[#cccccc]">Loading...</p>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <p className="text-gray-400">Loading...</p>
       </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center">
-        <p className="text-[#cccccc]">Redirecting to login...</p>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <p className="text-gray-400">Redirecting to login...</p>
       </div>
     );
   }
 
   if (!enrolledClass) {
     return (
-      <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-[#cccccc] mb-4">Class not found</p>
+          <p className="text-gray-400 mb-4">Class not found</p>
           <button
             onClick={() => router.push('/my-classes')}
-            className="px-6 py-2 bg-[#0ea5e9] text-white rounded hover:bg-[#06b6d4] transition"
+            className="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
           >
             Back to Classes
           </button>
@@ -67,8 +72,8 @@ export default function ClassDetailsPage() {
 
   if (!selectedModule) {
     return (
-      <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center">
-        <p className="text-[#cccccc]">Loading module...</p>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <p className="text-gray-400">Loading module...</p>
       </div>
     );
   }
@@ -79,45 +84,137 @@ export default function ClassDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1e1e1e] flex flex-col">
-      {/* Breadcrumb */}
-      <div className="bg-[#252526] border-b border-[#333] px-4 sm:px-6 lg:px-8 py-4 sticky top-0 z-10">
-        <div className="flex items-center gap-2 text-sm">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex flex-col">
+      {/* Header/Breadcrumb */}
+      <div className="bg-gray-800 border-b border-gray-700 px-4 sm:px-6 lg:px-8 py-4 sticky top-0 z-40">
+        <div className="flex items-center gap-3 text-sm">
           <button
             onClick={() => router.push('/my-classes')}
-            className="text-[#0ea5e9] hover:text-[#06b6d4] transition font-semibold"
+            className="text-indigo-400 hover:text-indigo-300 transition font-semibold flex items-center gap-1"
           >
-            ← My Classes
+            ← আমার কোর্স
           </button>
-          <span className="text-[#858585]">/</span>
-          <span className="text-[#cccccc] font-medium">{enrolledClass.title}</span>
+          <span className="text-gray-600">/</span>
+          <span className="text-gray-200 font-medium">{enrolledClass.title}</span>
         </div>
       </div>
 
-      {/* Main Content - Responsive Layout */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-6 lg:gap-8 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+      {/* Main Content - Two-column layout */}
+      <div className="flex-1 flex gap-0 overflow-hidden">
         {/* Left Column - Video and Homework */}
-        <div className="flex-1 min-w-0 flex flex-col gap-8">
-          {/* Video Container */}
-          <div className="bg-[#252526] rounded-2xl border border-[#333] overflow-hidden shadow-lg">
-            <VideoPlayer module={selectedModule} isCompact={true} />
+        <div className="flex-1 flex flex-col overflow-auto border-r border-gray-700">
+          {/* Video Section */}
+          <div className="bg-black p-6 border-b border-gray-700">
+            <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden shadow-lg flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-5xl mb-4">📚</div>
+                <h2 className="text-2xl font-bold text-white mb-2">{selectedModule.title}</h2>
+                <p className="text-gray-400">ভিডিও প্লেয়ার</p>
+                <p className="text-gray-500 text-sm mt-2">এই মডিউলটির জন্য ভিডিও সামগ্রী এখানে প্রদর্শিত হবে</p>
+              </div>
+            </div>
+            <p className="text-gray-300 mt-4 text-sm leading-relaxed">{selectedModule.description}</p>
           </div>
 
-          {/* Homework Section - Full width below video */}
-          <div className="bg-[#252526] rounded-2xl border border-[#333] p-6 sm:p-8 shadow-lg">
+          {/* Homework Section */}
+          <div className="p-6 border-b border-gray-700 flex-1">
             <HomeworkSection module={selectedModule} />
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="p-6 flex gap-4 border-t border-gray-700 bg-gray-900">
+            <button
+              disabled={currentModuleIndex === 0}
+              onClick={() => {
+                const prevModule = enrolledClass.modules[currentModuleIndex - 1];
+                if (prevModule) handleSelectModule(prevModule);
+              }}
+              className="flex-1 px-4 py-2 bg-gray-700 text-gray-300 rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            >
+              ← পূর্ববর্তী
+            </button>
+            <button
+              disabled={currentModuleIndex >= enrolledClass.modules.length - 1}
+              onClick={() => {
+                const nextModule = enrolledClass.modules[currentModuleIndex + 1];
+                if (nextModule) handleSelectModule(nextModule);
+              }}
+              className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            >
+              পরবর্তী →
+            </button>
           </div>
         </div>
 
         {/* Right Column - Module List */}
-        <div className="w-full lg:w-80 min-w-0">
-          <div className="bg-[#252526] rounded-2xl border border-[#333] overflow-hidden shadow-lg sticky top-24">
-            <ModuleList
-              modules={enrolledClass.modules}
-              selectedModuleId={selectedModule.id}
-              onSelectModule={handleSelectModule}
-              currentModuleIndex={currentModuleIndex}
-            />
+        <div className="w-80 border-l border-gray-700 bg-gray-900 flex flex-col overflow-hidden">
+          {/* Search Bar */}
+          <div className="p-4 border-b border-gray-700">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="মডিউল খুঁজুন..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+              />
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Module List */}
+          <div className="flex-1 overflow-auto">
+            {filteredModules.length > 0 ? (
+              <div className="space-y-1 p-4">
+                {filteredModules.map((module) => (
+                  <button
+                    key={module.id}
+                    onClick={() => handleSelectModule(module)}
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
+                      selectedModule.id === module.id
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="text-lg">📚</span>
+                      <div className="min-w-0 flex-1">
+                        <h3
+                          className={`font-semibold text-sm leading-snug ${
+                            selectedModule.id === module.id ? 'text-white' : 'text-gray-300'
+                          }`}
+                        >
+                          {module.title}
+                        </h3>
+                        <p
+                          className={`text-xs mt-1 ${
+                            selectedModule.id === module.id ? 'text-indigo-100' : 'text-gray-500'
+                          }`}
+                        >
+                          মডিউল {module.order}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="p-4 text-center text-gray-500 text-sm">
+                কোনো মডিউল পাওয়া যায়নি
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -132,26 +229,26 @@ function HomeworkSection({ module }: { module: Module }) {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'from-[#10b981] to-[#059669]';
+        return 'from-green-600 to-green-700';
       case 'medium':
-        return 'from-[#f59e0b] to-[#d97706]';
+        return 'from-yellow-600 to-yellow-700';
       case 'hard':
-        return 'from-[#ef4444] to-[#dc2626]';
+        return 'from-red-600 to-red-700';
       default:
-        return 'from-[#0ea5e9] to-[#06b6d4]';
+        return 'from-indigo-600 to-indigo-700';
     }
   };
 
   const getDifficultyBadgeColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'bg-[#d1fae5] text-[#065f46]';
+        return 'bg-green-900 text-green-300';
       case 'medium':
-        return 'bg-[#fed7aa] text-[#92400e]';
+        return 'bg-yellow-900 text-yellow-300';
       case 'hard':
-        return 'bg-[#fee2e2] text-[#7f1d1d]';
+        return 'bg-red-900 text-red-300';
       default:
-        return 'bg-[#cffafe] text-[#164e63]';
+        return 'bg-indigo-900 text-indigo-300';
     }
   };
 
@@ -162,79 +259,73 @@ function HomeworkSection({ module }: { module: Module }) {
   return (
     <div className="w-full">
       {/* Section Header */}
-      <div className="mb-8 pb-6 border-b border-[#333]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="text-3xl">📝</div>
-          <div>
-            <h3 className="text-2xl font-bold text-[#0ea5e9]">Today&apos;s Homework</h3>
-          </div>
+      <div className="mb-6 pb-4 border-b border-gray-700">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="text-2xl">📝</div>
+          <h3 className="text-xl font-bold text-indigo-400">আজকের হোমওয়ার্ক</h3>
         </div>
-        <p className="text-sm text-[#858585] ml-12">Complete this assignment to reinforce your learning and master the concepts</p>
+        <p className="text-sm text-gray-400 ml-11">এই অ্যাসাইনমেন্টটি সম্পূর্ণ করে আপনার জ্ঞান পরীক্ষা করুন</p>
       </div>
 
       {/* Homework Card */}
-      <div className={`bg-linear-to-br ${getDifficultyColor(module.homework.difficulty)} rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300`}>
+      <div className={`bg-gradient-to-br ${getDifficultyColor(module.homework.difficulty)} rounded-xl overflow-hidden shadow-xl`}>
         {/* Card Header */}
-        <div className="px-6 sm:px-8 py-8 text-white">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-            <div className="flex-1 min-w-0">
-              <h4 className="text-xl sm:text-2xl font-bold wrap-break-word">{module.homework.title}</h4>
-            </div>
-            <span className={`${getDifficultyBadgeColor(module.homework.difficulty)} px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap capitalize shadow-md`}>
+        <div className="px-6 py-6 text-white">
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <h4 className="text-lg font-bold">{module.homework.title}</h4>
+            <span
+              className={`${getDifficultyBadgeColor(
+                module.homework.difficulty
+              )} px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap capitalize`}
+            >
               {module.homework.difficulty}
             </span>
           </div>
-          <p className="text-base opacity-95 mb-6 leading-relaxed">{module.homework.description}</p>
-          <div className="flex flex-wrap items-center gap-6">
-            <div className="flex items-center gap-2 text-sm opacity-90">
+          <p className="text-sm opacity-95 mb-4 leading-relaxed">{module.homework.description}</p>
+          <div className="flex flex-wrap items-center gap-4 text-sm opacity-90">
+            <div className="flex items-center gap-2">
               <span>📅</span>
-              <span className="font-semibold">Due: {module.homework.dueDate}</span>
+              <span className="font-semibold">সময়সীমা: {module.homework.dueDate}</span>
             </div>
-            <div className="flex items-center gap-2 text-sm opacity-90">
+            <div className="flex items-center gap-2">
               <span>⏱️</span>
-              <span className="font-semibold">Est. Time: 30 mins</span>
+              <span className="font-semibold">আনুমানিক সময়: ৩০ মিনিট</span>
             </div>
           </div>
         </div>
 
         {/* Requirements Section */}
-        <div className="px-6 sm:px-8 py-6 bg-black bg-opacity-20 border-t border-white border-opacity-20">
-          <h5 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-            <span className="text-lg">✓</span>
-            <span>Requirements</span>
+        <div className="px-6 py-4 bg-black bg-opacity-30 border-t border-white border-opacity-10">
+          <h5 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+            <span>✓</span>
+            <span>প্রয়োজনীয়তা</span>
           </h5>
-          <ul className="space-y-3">
+          <ul className="space-y-2">
             {module.homework.requirements.map((req, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-sm text-white opacity-95">
-                <span className="text-green-300 font-bold shrink-0 mt-1">✓</span>
+              <li key={idx} className="flex items-start gap-2 text-xs text-white opacity-95">
+                <span className="text-green-300 font-bold shrink-0 mt-0.5">✓</span>
                 <span className="leading-relaxed">{req}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Action Button */}
-        <div className="px-6 sm:px-8 py-6 bg-black bg-opacity-30 border-t border-white border-opacity-20 flex gap-4">
+        {/* Action Buttons */}
+        <div className="px-6 py-4 bg-black bg-opacity-40 border-t border-white border-opacity-10 flex gap-3">
           <button
             onClick={handleStartHomework}
-            className="flex-1 px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-opacity-95 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-xl text-base flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-3 bg-white text-gray-900 font-bold rounded-lg hover:bg-opacity-95 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-xl text-sm flex items-center justify-center gap-2"
           >
             <span>▶</span>
-            <span>Start Homework</span>
-          </button>
-          <button
-            onClick={() => router.push('/my-classes')}
-            className="px-6 py-3 bg-white bg-opacity-20 text-white font-semibold rounded-lg hover:bg-opacity-30 transition-all duration-200 text-base"
-          >
-            Back
+            <span>হোমওয়ার্ক শুরু করুন</span>
           </button>
         </div>
       </div>
 
-      {/* Additional Info */}
-      <div className="mt-8 pt-6 border-t border-[#333]">
-        <p className="text-xs text-[#858585] text-center">
-          💡 Tip: Save your work regularly. The playground auto-saves every minute.
+      {/* Tip */}
+      <div className="mt-4 pt-4 border-t border-gray-700">
+        <p className="text-xs text-gray-500 text-center">
+          💡 টিপ: আপনার কাজ নিয়মিত সংরক্ষণ করুন। প্লেগ্রাউন্ড প্রতি মিনিটে স্বয়ংক্রিয়ভাবে সংরক্ষণ করে।
         </p>
       </div>
     </div>

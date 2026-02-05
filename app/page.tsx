@@ -3,13 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAuth } from '@/lib/AuthContext';
+import Navbar from './components/Navbar';
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth();
-
   return (
     <div className="bg-[#1e1e1e] text-white">
+      <Navbar />
       {/* Banner Section */}
       <section id="home" className="bg-linear-to-br from-[#667eea] via-[#764ba2] to-[#f093fb] py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Animated background blobs */}
@@ -26,15 +25,13 @@ export default function HomePage() {
           <p className="text-lg sm:text-xl text-white opacity-95 max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
             Luminous Skill Center delivers innovative learning solutions, including web design, digital marketing, and creative skills, with interactive technology and premium education at an affordable range.
           </p>
-          {!isAuthenticated && (
-            <Link
-              href="/login"
-              className="inline-block px-8 py-3 bg-white text-[#0ea5e9] font-bold rounded-lg hover:bg-opacity-90 transform hover:-translate-y-1 active:scale-95 transition-all duration-200 shadow-xl hover:shadow-2xl animate-fade-in"
-              style={{ animationDelay: '0.4s' }}
-            >
-              Get Started Now
-            </Link>
-          )}
+          <Link
+            href="/login"
+            className="inline-block px-8 py-3 bg-white text-[#0ea5e9] font-bold rounded-lg hover:bg-opacity-90 transform hover:-translate-y-1 active:scale-95 transition-all duration-200 shadow-xl hover:shadow-2xl animate-fade-in"
+            style={{ animationDelay: '0.4s' }}
+          >
+            Get Started Now
+          </Link>
         </div>
       </section>
 
@@ -67,14 +64,12 @@ export default function HomePage() {
                 <p className="text-[#666] mb-7 leading-relaxed group-hover:text-[#333] transition-colors duration-300">
                   Strategic digital marketing solutions to grow brand visibility and connect customers with innovative software experiences.
                 </p>
-                {isAuthenticated && (
-                  <Link
-                    href="/my-classes"
-                    className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
-                  >
-                    Get Started
-                  </Link>
-                )}
+                <Link
+                  href="/my-classes"
+                  className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
+                >
+                  Get Started
+                </Link>
               </div>
             </div>
 
@@ -95,14 +90,12 @@ export default function HomePage() {
                 <p className="text-[#666] mb-7 leading-relaxed group-hover:text-[#333] transition-colors duration-300">
                   Professional web solutions that ensure performance, security, and modern design standards.
                 </p>
-                {isAuthenticated && (
-                  <Link
-                    href="/my-classes"
-                    className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
-                  >
-                    Get Started
-                  </Link>
-                )}
+                <Link
+                  href="/my-classes"
+                  className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
+                >
+                  Get Started
+                </Link>
               </div>
             </div>
 
@@ -123,14 +116,12 @@ export default function HomePage() {
                 <p className="text-[#666] mb-7 leading-relaxed group-hover:text-[#333] transition-colors duration-300">
                   Creative visual designs that represent innovation, quality, and premium branding.
                 </p>
-                {isAuthenticated && (
-                  <Link
-                    href="/my-classes"
-                    className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
-                  >
-                    Get Started
-                  </Link>
-                )}
+                <Link
+                  href="/my-classes"
+                  className="inline-block px-6 py-3 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg font-bold hover:shadow-lg transform hover:-translate-y-1 active:scale-95 transition-all duration-200 w-full text-center"
+                >
+                  Get Started
+                </Link>
               </div>
             </div>
           </div>
